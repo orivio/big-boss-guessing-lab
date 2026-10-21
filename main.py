@@ -1,4 +1,5 @@
 import pygame
+import random
 
 pygame.init()
 
@@ -6,6 +7,8 @@ clock = pygame.time.Clock()
 WIDTH = 600
 HEIGHT = 400
 screen = pygame.display.set_mode((WIDTH, HEIGHT), vsync=1)
+
+states = ["Graveyard", "House", "Forest", "Pumpkin"]
 
 gameloop = True
 while gameloop:
