@@ -18,6 +18,7 @@ transition_matrix = [
 
 current_state = 2
 next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
+ambush_decision = 0
 
 
 gameloop = True
@@ -25,7 +26,15 @@ while gameloop:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameloop = False
-
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_1]:
+        ambush_decision = 1
+    elif keys[pygame.K_2]:
+        ambush_decision = 2
+    elif keys[pygame.K_3]:
+        ambush_decision = 3
+    elif keys[pygame.K_4]:
+        ambush_decision = 4
     screen.fill((0, 0, 0))
 
     pygame.draw.rect(screen, (128, 128, 128), (0, 0, WIDTH/2, HEIGHT/2)) #grave
