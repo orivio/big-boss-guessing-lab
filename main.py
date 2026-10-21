@@ -9,6 +9,16 @@ HEIGHT = 400
 screen = pygame.display.set_mode((WIDTH, HEIGHT), vsync=1)
 
 states = ["Graveyard", "House", "Forest", "Pumpkin"]
+transition_matrix = [
+    [0.10, 0.45, 0.30, 0.15],
+    [0.35, 0.10, 0.40, 0.15],
+    [0.25, 0.35, 0.15, 0.25],
+    [0.40, 0.20, 0.20, 0.20]
+]
+
+current_state = 2
+next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
+
 
 gameloop = True
 while gameloop:
@@ -23,6 +33,24 @@ while gameloop:
     pygame.draw.rect(screen, (25, 124, 50), (0, HEIGHT/2, WIDTH/2, HEIGHT)) #forestr
     pygame.draw.rect(screen, (125, 80, 10), (WIDTH/2, HEIGHT/2, WIDTH, HEIGHT)) #pumpijn
 
+    font = pygame.font.SysFont(None, 36)
+    texts = [
+    font.render("1 - Graveyard", True, (255, 255, 255)),
+    font.render("2 - Haunted House", True, (255, 255, 255)),
+    font.render("3 - Forest", True, (255, 255, 255)),
+    font.render("4 - Pumpkin Patch", True, (255, 255, 255))
+    ]
+    for i, text in enumerate(texts):
+        match i:
+            case 0:
+                screen.blit(text, (WIDTH/4 - 60, HEIGHT/4))
+            case 1:
+                screen.blit(text, (WIDTH*0.75 - 90, HEIGHT/4))
+            case 2:
+                screen.blit(text, (WIDTH/4 - 50, HEIGHT*0.75))
+            case 3:
+                screen.blit(text, (WIDTH*0.75 - 90, HEIGHT*0.75))
+        
     pygame.display.flip()
 
 pygame.quit()
