@@ -16,69 +16,48 @@ transition_matrix = [
     [0.40, 0.20, 0.20, 0.20]
 ]
 
-current_state = 1
-next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
 ambush_decision = 0
-score = 0
-rounds = 0
-gameended = False
 
+class GameManager:
+    def __init__(self):
+        self.score = 0
+        self.rounds = 0
+        self.game_ended = False
+        self.current_state = 1
+        self.next_state = random.choices(range(4), weights = transition_matrix[self.current_state], k = 1)[0]
+    def check_guess(self, decision):
+        self.rounds += 1
+        if self.current_state == decision:
+            self.current_state = self.next_state
+            self.next_state = random.choices(range(4), weights = transition_matrix[self.current_state], k = 1)[0]
+            self.score += 1
+            print(f"Correct! Score: {self.score}")
+        else:
+            print(f"The monster escaped! Score: {self.score}")
+            self.current_state = self.next_state
+            self.next_state = random.choices(range(4), weights = transition_matrix[self.current_state], k = 1)[0]
+            
 
+manager = GameManager()
 gameloop = True #TODO ADD SCORE N STUFF
 while gameloop:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameloop = False
     keys = pygame.key.get_pressed()
-    if not gameended:
+    if not manager.game_ended:
         if keys[pygame.K_1]:
             ambush_decision = 0
-            rounds += 1
-            if(current_state == ambush_decision):
-                current_state = next_state
-                next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
-                score += 1
-                print(f"Correct! Score: {score}")
-            else:
-                print(f"The monster escaped! Score: {score}")
-                current_state = next_state
-                next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
+            manager.check_guess(ambush_decision)
         elif keys[pygame.K_2]:
             ambush_decision = 1
-            rounds += 1
-            if(current_state == ambush_decision):
-                current_state = next_state
-                next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
-                score += 1
-                print(f"Correct! Score: {score}")
-            else:
-                print(f"The monster escaped! Score: {score}")
-                current_state = next_state
-                next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
+            manager.check_guess(ambush_decision)
         elif keys[pygame.K_3]:
             ambush_decision = 2
-            rounds += 1
-            if(current_state == ambush_decision):
-                current_state = next_state
-                next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
-                score += 1
-                print(f"Correct! Score: {score}")
-            else:
-                print(f"The monster escaped! Score: {score}")
-                current_state = next_state
-                next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
+            manager.check_guess(ambush_decision)
         elif keys[pygame.K_4]:
             ambush_decision = 3
-            rounds += 1
-            if(current_state == ambush_decision):
-                current_state = next_state
-                next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
-                score += 1
-                print(f"Correct! Score: {score}")
-            else:
-                print(f"The monster escaped! Score: {score}")
-                current_state = next_state
-                next_state = random.choices(range(4), weights = transition_matrix[current_state], k = 1)[0]
+            manager.check_guess(ambush_decision)
     screen.fill((0, 0, 0))
 
     pygame.draw.rect(screen, (128, 128, 128), (0, 0, WIDTH/2, HEIGHT/2)) #grave
@@ -106,10 +85,10 @@ while gameloop:
 
     clock.tick(10)
 
-    if rounds >= 10:
+    if manager.rounds >= 10:
         screen.fill((0, 0, 0))
-        screen.blit(font.render(f"Final Score: {score}/10", True, (255, 255, 255)), (WIDTH/2 - 90, HEIGHT/2))
-        gameended = True
+        screen.blit(font.render(f"Final Score: {manager.score}/10", True, (255, 255, 255)), (WIDTH/2 - 90, HEIGHT/2))
+        manager.game_ended = True
     
     pygame.display.flip()
 
