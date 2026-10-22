@@ -16,7 +16,6 @@ transition_matrix = [
     [0.40, 0.20, 0.20, 0.20]
 ]
 
-ambush_decision = 0
 
 class GameManager:
     def __init__(self):
@@ -39,8 +38,18 @@ class GameManager:
             
 
 manager = GameManager()
-gameloop = True #TODO ADD SCORE N STUFF
+
+rewards = [10, 5, 8, 20]
+exp = []
+for i in range(4):
+    value = transition_matrix[manager.current_state][i]
+    exp.append(value)
+best = exp.index(max(exp))
+
+ambush_decision = 0
+gameloop = True
 while gameloop:
+    print(best)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameloop = False
